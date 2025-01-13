@@ -74,4 +74,31 @@ public class StockMarketView extends View {
             }
         });
     }
+
+    private void fetchIntradayData(String symbol) {
+        StockApiClient client = new StockApiClient("http://10.0.2.2:8083");
+        client.getStockAPI().getIntradayData(symbol, "5min", )
+                .enqueue(new Callback<IntradayResponse>() {
+                    @Override
+                    public void onResponse(Call<IntradayResponse> call, Response<IntradayResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            IntradayResponse intradayData = response.body();
+                            String lastRefreshed = intradayData.getMetaData().getLastRefreshed();
+                            TimeSeriesData latestData = intradayData.getTimeSeries().get(lastRefreshed);
+
+                            // הצגת הנתונים על המסך
+                            System.out.println("Open: " + latestData.getOpen());
+                            System.out.println("High: " + latestData.getHigh());
+                            System.out.println("Close: " + latestData.getClose());
+                            System.out.println("Volume: " + latestData.getVolume());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<IntradayResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+    }
+
 }
