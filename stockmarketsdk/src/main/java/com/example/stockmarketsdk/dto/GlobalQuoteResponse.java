@@ -1,4 +1,4 @@
-package com.example.stockmarketsdk;
+package com.example.stockmarketsdk.dto;
 
 import com.google.gson.annotations.SerializedName;
 

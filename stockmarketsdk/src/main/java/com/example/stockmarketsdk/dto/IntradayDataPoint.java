@@ -1,23 +1,36 @@
-package com.example.stockmarketsdk;
+package com.example.stockmarketsdk.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TimeSeriesData {
 
-    @SerializedName("1. open")
+public class IntradayDataPoint {
+
+    @SerializedName("timestamp")
+    private String timestamp;
+
+    @SerializedName("open")
     private double open;
 
-    @SerializedName("2. high")
+    @SerializedName("high")
     private double high;
 
-    @SerializedName("3. low")
+    @SerializedName("low")
     private double low;
 
-    @SerializedName("4. close")
+    @SerializedName("close")
     private double close;
 
-    @SerializedName("5. volume")
-    private double volume;
+    @SerializedName("volume")
+    private long volume;
+
+    // Getters and Setters
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public double getOpen() {
         return open;
@@ -51,11 +64,11 @@ public class TimeSeriesData {
         this.close = close;
     }
 
-    public double getVolume() {
+    public long getVolume() {
         return volume;
     }
 
-    public void setVolume(double volume) {
+    public void setVolume(long volume) {
         this.volume = volume;
     }
 }

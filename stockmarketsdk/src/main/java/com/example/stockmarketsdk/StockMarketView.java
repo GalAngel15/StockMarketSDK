@@ -1,12 +1,18 @@
 package com.example.stockmarketsdk;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+
+import com.example.stockmarketsdk.dto.GlobalQuoteResponse;
+import com.example.stockmarketsdk.dto.IntradayDataPoint;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -15,28 +21,39 @@ import retrofit2.Response;
 public class StockMarketView extends View {
 
     private Paint paint;
-    private String stockSymbol = "AAPL";  // סימול ברירת מחדל
+    Context context;
+
+    private String stockSymbol = "TSLA";
     private double stockPrice = 0.0;
+    float width = 200 , height = 240;
+
+    private float SIZE = 48f, MIN = 0f, MAX = 40f;
+    StockApiClient client = new StockApiClient("http://10.0.2.2:8083/");
 
     public StockMarketView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public StockMarketView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs,R.styleable.StockMarketView);
+        SIZE = typedArray.getInt(R.styleable.StockMarketView_size, 48);
+        init(context);
     }
 
     public StockMarketView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs,R.styleable.StockMarketView);
+        SIZE = typedArray.getInt(R.styleable.StockMarketView_size, 48);
+        init(context);
     }
 
-    private void init() {
-        paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setTextSize(50);
+    public void init(Context context) {
+        this.paint = new Paint();
+        this.paint.setColor(Color.GREEN);
+
+        this.context = context;
 
         // ביצוע קריאה ל-API כדי לקבל נתוני מניה
         fetchStockData(stockSymbol);
@@ -56,8 +73,7 @@ public class StockMarketView extends View {
         fetchStockData(symbol);
     }
 
-    private void fetchStockData(String symbol) {
-        StockApiClient client = new StockApiClient("http://10.0.2.2:8083");
+    public void fetchStockData(String symbol) {
         client.getStockAPI().getStockQuote(symbol).enqueue(new Callback<GlobalQuoteResponse.GlobalQuote>() {
             @Override
             public void onResponse(Call<GlobalQuoteResponse.GlobalQuote> call, Response<GlobalQuoteResponse.GlobalQuote> response) {
@@ -70,32 +86,30 @@ public class StockMarketView extends View {
 
             @Override
             public void onFailure(Call<GlobalQuoteResponse.GlobalQuote> call, Throwable t) {
+                Log.e("API_ERROR", "Error: " + t.getMessage());
                 t.printStackTrace();
             }
         });
     }
 
-    private void fetchIntradayData(String symbol) {
-        StockApiClient client = new StockApiClient("http://10.0.2.2:8083");
-        client.getStockAPI().getIntradayData(symbol, "5min", )
-                .enqueue(new Callback<IntradayResponse>() {
+    public void fetchIntradayData(String symbol, String interval) {
+        client.getStockAPI().getIntradayData(symbol, interval)
+                .enqueue(new Callback<List<IntradayDataPoint>>() {
                     @Override
-                    public void onResponse(Call<IntradayResponse> call, Response<IntradayResponse> response) {
+                    public void onResponse(Call<List<IntradayDataPoint>> call, Response<List<IntradayDataPoint>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            IntradayResponse intradayData = response.body();
-                            String lastRefreshed = intradayData.getMetaData().getLastRefreshed();
-                            TimeSeriesData latestData = intradayData.getTimeSeries().get(lastRefreshed);
-
-                            // הצגת הנתונים על המסך
-                            System.out.println("Open: " + latestData.getOpen());
-                            System.out.println("High: " + latestData.getHigh());
-                            System.out.println("Close: " + latestData.getClose());
-                            System.out.println("Volume: " + latestData.getVolume());
+                            List<IntradayDataPoint> intradayData = response.body();
+                            for (IntradayDataPoint dataPoint : intradayData) {
+                                Log.d("StockMarketView", "Timestamp: " + dataPoint.getTimestamp() +
+                                        ", Open: " + dataPoint.getOpen() +
+                                        ", Close: " + dataPoint.getClose());
+                            }
+                            invalidate();  // צייר מחדש את ה-View עם הנתונים החדשים
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<IntradayResponse> call, Throwable t) {
+                    public void onFailure(Call<List<IntradayDataPoint>> call, Throwable t) {
                         t.printStackTrace();
                     }
                 });
