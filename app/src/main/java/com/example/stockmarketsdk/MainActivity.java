@@ -1,41 +1,56 @@
 package com.example.stockmarketsdk;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.example.stockmarketsdk.StockMarketView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.stockmarketsdk.adapters.WatchlistAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    private StockMarketView stockMarketView;
-    private EditText stockSymbolInput;
-    private Spinner intervalSpinner;
-    private Button searchButton;
+    private RecyclerView watchlistRecyclerView;
+    private WatchlistAdapter watchlistAdapter;
+    private final List<String> watchlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViews();
-        initButtons();
+        // Initialize RecyclerView
+        watchlistRecyclerView = findViewById(R.id.watchlist_recycler);
+        watchlistRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        watchlistAdapter = new WatchlistAdapter(watchlist, stockSymbol -> {
+            // Handle item click (load data into chart)
+            Toast.makeText(this, "Selected: " + stockSymbol, Toast.LENGTH_SHORT).show();
+        });
+
+        watchlistRecyclerView.setAdapter(watchlistAdapter);
+
+        // Load Watchlist
+        loadWatchlist();
     }
 
-    private void findViews() {
-         stockMarketView = findViewById(R.id.stockMarketView);
-         stockSymbolInput = findViewById(R.id.stockSymbolInput);
-         intervalSpinner = findViewById(R.id.intervalSpinner);
-         searchButton = findViewById(R.id.searchButton);
-        }
+    private void loadWatchlist() {
+        StockSDK.getWatchlist(new Callback_Stock<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+                watchlist.clear();
+                watchlist.addAll(result);
+                watchlistAdapter.notifyDataSetChanged();
+            }
 
-    private void initButtons() {
-        searchButton.setOnClickListener(v -> {
-            String stockSymbol = stockSymbolInput.getText().toString();
-            String interval = intervalSpinner.getSelectedItem().toString();
-            stockMarketView.fetchIntradayData(stockSymbol, interval);
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(MainActivity.this, "Failed to load watchlist", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
+

@@ -1,45 +1,109 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    tools:context=".MainActivity">
 
-    <!-- ריבוע שבו יוצג הגרף -->
-    <com.example.stockmarketsdk.StockMarketView
-        android:id="@+id/stockMarketView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="#E0E0E0" />
-
-    <!-- שדה להזנת מניה -->
-    <EditText
-        android:id="@+id/stockSymbolInput"
+    <!-- AppBarLayout for Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="Stock symbol"
-        android:hint="Enter stock symbol (e.g., TSLA)"
-        android:padding="12dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:drawable/editbox_background" />
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-    <!-- בחירת אינטרוול -->
-    <Spinner
-        android:id="@+id/intervalSpinner"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Stock Market Demo"
+            android:background="?attr/colorPrimary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Main Content -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:entries="@array/interval_options"/>
-    <!-- כפתור חיפוש -->
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        >
+
+        <!-- Watchlist Section -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:background="@color/white">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watchlist"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:padding="8dp"
+
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/watchlist_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                tools:listitem="@layout/item_watchlist"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_stock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+ Add"
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clear_watchlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clear"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:icon="@drawable/ic_delete" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Chart Section -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:padding="8dp">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/stock_chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Search Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/search_stock"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Search"
-        android:backgroundTint="#6200EE"
-        android:textColor="#FFFFFF" />
-
-</LinearLayout>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_search"
+        android:contentDescription="Search Stock"
+        app:backgroundTint="@color/colorAccent"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

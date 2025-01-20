@@ -1,4 +1,4 @@
-package com.example.stockmarketsdk;
+package com.example.stockmarketsdk.apis;
 
 import com.example.stockmarketsdk.dto.GlobalQuoteResponse;
 import com.example.stockmarketsdk.dto.IntradayDataPoint;
@@ -15,6 +15,15 @@ public interface StockAPI {
     Call<GlobalQuoteResponse.GlobalQuote> getStockQuote(@Query("symbol") String symbol);
 
     @GET("stocks/stock/intraday")
-    Call<List<IntradayDataPoint>> getIntradayData(@Query("symbol") String symbol, @Query("interval") String interval);
+    Call<List<IntradayDataPoint>> getIntraday(
+            @Query("symbol") String symbol,
+            @Query("interval") String interval
+    );
+
+    @GET("stocks/stock/time-series")
+    Call<List<IntradayDataPoint>> getTimeSeries(
+            @Query("function") String symbol,
+            @Query("symbol") String interval
+    );
 
 }
