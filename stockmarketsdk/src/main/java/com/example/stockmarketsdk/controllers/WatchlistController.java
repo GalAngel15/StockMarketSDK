@@ -49,10 +49,10 @@ public class WatchlistController {
         });
     }
 
-    public void addStockToWatchlist(String stockSymbol ,Callback_Stock<String> callback) {
-        getAPI().addStockToWatchlist(stockSymbol).enqueue(new Callback<>() {
+    public void addStockToWatchlist(String stockSymbol ,Callback_Stock<WatchlistDTO> callback) {
+        getAPI().addStockToWatchlist(stockSymbol.toUpperCase()).enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<WatchlistDTO> call, Response<WatchlistDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
@@ -61,26 +61,26 @@ public class WatchlistController {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<WatchlistDTO> call, Throwable t) {
                 callback.onFailure(t.getMessage());
             }
         });
     }
 
-    public void removeStockFromWatchlist(String stockSymbol ,Callback_Stock<String> callback) {
+    public void removeStockFromWatchlist(String stockSymbol ,Callback_Stock<Void> callback) {
         getAPI().removeStockFromWatchlist(stockSymbol).enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(null);
                 } else {
-                    callback.onFailure("Failed to fetch watchlist");
+                    callback.onFailure("Failed to delete stock: HTTP " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                callback.onFailure(t.getMessage());
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.onFailure("Error: " + t.getMessage());
             }
         });
     }

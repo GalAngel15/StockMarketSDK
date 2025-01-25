@@ -1,17 +1,11 @@
 package com.example.stockmarketsdk.managers;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.stockmarketsdk.Callback_Stock;
-import com.example.stockmarketsdk.MainActivity;
-import com.example.stockmarketsdk.StockSDK;
 import com.example.stockmarketsdk.adapters.WatchlistAdapter;
-import com.example.stockmarketsdk.dto.WatchlistDTO;
 import com.example.stockmarketsdk.models.WatchlistItem;
 
 import java.util.ArrayList;

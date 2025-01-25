@@ -16,10 +16,10 @@ public interface WatchlistAPI {
     Call<List<WatchlistDTO>> getWatchlist();
 
     @POST("/watchlist/{stockSymbol}")
-    Call<String> addStockToWatchlist(@Path("stockSymbol") String stockSymbol);
+    Call<WatchlistDTO> addStockToWatchlist(@Path("stockSymbol") String stockSymbol);
 
     @DELETE("/watchlist/{symbol}")
-    Call<String> removeStockFromWatchlist(@Path("symbol") String symbol);
+    Call<Void> removeStockFromWatchlist(@Path("symbol") String symbol);
 
     @DELETE("/watchlist")
     Call<Void> clearWatchlist();

@@ -28,11 +28,11 @@ public class StockSDK {
         watchlistController.getWatchlist(callback);
     }
 
-    public static void addStockToWatchlist(String stockSymbol, Callback_Stock<String> callback) {
+    public static void addStockToWatchlist(String stockSymbol, Callback_Stock<WatchlistDTO> callback) {
         watchlistController.addStockToWatchlist(stockSymbol, callback);
     }
 
-    public static void removeStockFromWatchlist(String symbol, Callback_Stock<String> callback) {
+    public static void removeStockFromWatchlist(String symbol, Callback_Stock<Void> callback) {
         watchlistController.removeStockFromWatchlist(symbol, callback);
     }
 
