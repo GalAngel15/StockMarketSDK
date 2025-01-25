@@ -6,6 +6,7 @@ import com.example.stockmarketsdk.dto.GlobalQuoteResponse;
 import com.example.stockmarketsdk.dto.IntradayDataPoint;
 import com.google.gson.GsonBuilder;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -70,7 +71,9 @@ public class StockController {
             @Override
             public void onResponse(Call<List<IntradayDataPoint>> call, Response<List<IntradayDataPoint>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
+                    List<IntradayDataPoint> dataPoints = response.body();
+                    Collections.reverse(dataPoints);
+                    callback.onSuccess(dataPoints);
                 } else {
                     callback.onFailure("Failed to fetch stock quote");
                 }

@@ -11,19 +11,19 @@ import retrofit2.http.Query;
 
 public interface StockAPI {
 
-    @GET("stocks/stock")
+    @GET("stock")
     Call<GlobalQuoteResponse.GlobalQuote> getStockQuote(@Query("symbol") String symbol);
 
-    @GET("stocks/stock/intraday")
+    @GET("stock/intraday")
     Call<List<IntradayDataPoint>> getIntraday(
             @Query("symbol") String symbol,
             @Query("interval") String interval
     );
 
-    @GET("stocks/stock/time-series")
+    @GET("stock/time-series")
     Call<List<IntradayDataPoint>> getTimeSeries(
-            @Query("function") String symbol,
-            @Query("symbol") String interval
+            @Query("function") String function,
+            @Query("symbol") String symbol
     );
 
 }

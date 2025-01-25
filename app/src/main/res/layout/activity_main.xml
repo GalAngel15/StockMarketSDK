@@ -28,21 +28,32 @@
         android:orientation="vertical"
         android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        >
 
         <!-- Chart Section -->
-        <FrameLayout
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:padding="8dp">
+            android:padding="8dp"
+            android:layout_weight="2">
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white" />
-        </FrameLayout>
+            <TextView
+                android:id="@+id/corner_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="false"
+                android:padding="8dp"
+                android:background="@color/gray"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:text="X: -, Y: -" />
+        </RelativeLayout>
 
         <!-- Watchlist Section -->
         <LinearLayout

@@ -20,8 +20,8 @@ public class StockSDK {
         stockController.getIntraday(symbol, interval, callback);
     }
 
-    public static void getTimeSeries(String symbol, String interval, Callback_Stock<List<IntradayDataPoint>> callback) {
-        stockController.getTimeSeries(symbol, interval, callback);
+    public static void getTimeSeries(String function, String symbol, Callback_Stock<List<IntradayDataPoint>> callback) {
+        stockController.getTimeSeries(function, symbol, callback);
     }
 
     public static void getWatchlist(Callback_Stock<List<WatchlistDTO>> callback) {

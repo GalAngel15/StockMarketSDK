@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stockmarketsdk.adapters.WatchlistAdapter;
+import com.example.stockmarketsdk.dto.IntradayDataPoint;
 import com.example.stockmarketsdk.dto.WatchlistDTO;
 import com.example.stockmarketsdk.managers.ChartManager;
 import com.example.stockmarketsdk.managers.WatchlistManager;
@@ -21,6 +23,9 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -43,9 +48,21 @@ public class MainActivity extends AppCompatActivity {
         initButtons();
         watchlistManager = new WatchlistManager(this, watchlistRecyclerView);
         chartManager = new ChartManager(lineChart);
-        setChart();
+        //setChart();
         initWatchlist();
+        StockSDK.getTimeSeries("TIME_SERIES_DAILY","AAPL", new Callback_Stock<List<IntradayDataPoint>>() {
+            @Override
+            public void onSuccess(List<IntradayDataPoint> result) {
+                Log.e("MainActivity", "Fetched data: " + result);
+                setChart(result, lineChart);
+            }
 
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("MainActivity", "Failed to fetch data: " + errorMessage);
+                Toast.makeText(MainActivity.this, "Failed to fetch data: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initWatchlist() {
@@ -69,17 +86,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             entries.add(new Entry(i + 5, (100 - i * 5) * 2));
         }
-
-        LineDataSet dataSet = new LineDataSet(entries, "ערך מניה");
-        dataSet.setColor(Color.BLUE);          // צבע הקו
-        dataSet.setValueTextColor(Color.BLACK);
-
-        LineData lineData = new LineData(dataSet);
-
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        lineChart.setData(lineData);
-        lineChart.invalidate(); // מרענן את הגרף
-
+        chartManager.updateChartData(entries);
     }
 
 
@@ -157,6 +164,62 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                 .show();
+    }
+
+    private void setChart(List<IntradayDataPoint> dataPoints, LineChart lineChart) {
+        TextView cornerText = findViewById(R.id.corner_text);
+        // יצירת ערכי ציר Y (close) ו-X (timestamps כאינדקסים)
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < dataPoints.size(); i++) {
+            entries.add(new Entry(i, (float) dataPoints.get(i).getClose()));
+        }
+
+        // יצירת ה-DataSet
+        LineDataSet dataSet = new LineDataSet(entries, "Closing Prices");
+        dataSet.setColor(Color.BLUE);
+        dataSet.setValueTextColor(Color.BLACK);
+
+        // הגדרת Formatter לתאריכים בציר X
+        String[] timestamps = dataPoints.stream()
+                .map(IntradayDataPoint::getTimestamp)
+                .toArray(String[]::new);
+
+        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int index = (int) value;
+                return (index >= 0 && index < timestamps.length) ? timestamps[index] : "";
+            }
+        });
+
+        // קביעת נתונים לגרף
+        LineData lineData = new LineData(dataSet);
+        lineChart.setData(lineData);
+        lineChart.getXAxis().setGranularity(1f); // הצגת כל תאריך
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        CustomMarkerView markerView = new CustomMarkerView(this, R.layout.custom_marker_view);
+        markerView.setChartView(lineChart); // קישור ה-MarkerView לגרף
+        lineChart.setMarker(markerView);   // הגדרת ה-MarkerView לגרף
+
+
+        // הגדרת Listener לנקודות המסומנות
+        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                // עדכון הערכים בתצוגה בפינה
+                cornerText.setText(String.format("X: %.0f, Y: %.2f", e.getX(), e.getY()));
+            }
+
+            @Override
+            public void onNothingSelected() {
+                // ריקון התצוגה בפינה כשאין נקודה נבחרת
+                cornerText.setText("X: -, Y: -");
+            }
+        });
+
+
+        lineChart.invalidate(); // רענון
     }
 
 }
