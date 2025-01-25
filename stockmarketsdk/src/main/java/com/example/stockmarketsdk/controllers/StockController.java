@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StockController {
-    private static final String BASE_URL = "https://your-stock-api.com/";
+    private static final String BASE_URL = "https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/";
 
     private StockAPI getAPI() {
         Retrofit retrofit = new Retrofit.Builder()

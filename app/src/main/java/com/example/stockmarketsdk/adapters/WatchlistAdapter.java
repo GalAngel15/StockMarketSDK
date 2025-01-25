@@ -3,28 +3,31 @@ package com.example.stockmarketsdk.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stockmarketsdk.R;
+import com.example.stockmarketsdk.interfaces.OnStockDeleteListener;
+import com.example.stockmarketsdk.models.WatchlistItem;
 
 import java.util.List;
 
 public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> {
 
-    private final List<String> watchlist;
-    private final OnItemClickListener listener;
+    private final List<WatchlistItem> watchlist;
+    private OnStockDeleteListener onStockDeleteListener;
 
-    public WatchlistAdapter(List<String> watchlist, OnItemClickListener listener) {
+    public WatchlistAdapter(List<WatchlistItem> watchlist) {
         this.watchlist = watchlist;
-        this.listener = listener;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(String stockSymbol);
+    public void setOnStockDeleteListener(OnStockDeleteListener listener){
+        this.onStockDeleteListener = listener;
     }
+
 
     @NonNull
     @Override
@@ -36,10 +39,12 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 
     @Override
     public void onBindViewHolder(@NonNull WatchlistViewHolder holder, int position) {
-        String stockSymbol = watchlist.get(position);
-        holder.stockSymbolText.setText(stockSymbol);
-
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(stockSymbol));
+        WatchlistItem stock = watchlist.get(position);
+        holder.stockSymbol.setText(stock.getStockSymbol());
+        holder.stockPrice.setText(stock.getStockPrice() + " $");
+        holder.removeButton.setOnClickListener(v ->
+            onStockDeleteListener.onStockDeleted(stock,position)
+        );
     }
 
     @Override
@@ -48,11 +53,15 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
     }
 
     static class WatchlistViewHolder extends RecyclerView.ViewHolder {
-        private final TextView stockSymbolText;
+        TextView stockSymbol;
+        TextView stockPrice;
+        ImageButton removeButton;
 
         public WatchlistViewHolder(@NonNull View itemView) {
             super(itemView);
-            stockSymbolText = itemView.findViewById(R.id.stock_symbol);
+            stockSymbol = itemView.findViewById(R.id.stock_symbol);
+            stockPrice = itemView.findViewById(R.id.stock_price);
+            removeButton = itemView.findViewById(R.id.deleteStockBtn);
         }
     }
 }

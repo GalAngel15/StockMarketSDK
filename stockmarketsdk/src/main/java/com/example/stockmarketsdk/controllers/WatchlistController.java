@@ -2,6 +2,7 @@ package com.example.stockmarketsdk.controllers;
 
 import com.example.stockmarketsdk.Callback_Stock;
 import com.example.stockmarketsdk.apis.WatchlistAPI;
+import com.example.stockmarketsdk.dto.WatchlistDTO;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WatchlistController {
-    private static final String BASE_URL = "https://your-stock-api.com/";
+    private static final String BASE_URL = "https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/";
 
     private WatchlistAPI getAPI() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -30,10 +31,10 @@ public class WatchlistController {
         return retrofit.create(WatchlistAPI.class);
     }
 
-    public void getWatchlist(Callback_Stock<List<String>> callback) {
+    public void getWatchlist(Callback_Stock<List<WatchlistDTO>> callback) {
         getAPI().getWatchlist().enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+            public void onResponse(Call<List<WatchlistDTO>> call, Response<List<WatchlistDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
@@ -42,7 +43,7 @@ public class WatchlistController {
             }
 
             @Override
-            public void onFailure(Call<List<String>> call, Throwable t) {
+            public void onFailure(Call<List<WatchlistDTO>> call, Throwable t) {
                 callback.onFailure(t.getMessage());
             }
         });

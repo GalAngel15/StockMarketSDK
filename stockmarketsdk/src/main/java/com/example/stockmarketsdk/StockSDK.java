@@ -4,6 +4,7 @@ import com.example.stockmarketsdk.controllers.StockController;
 import com.example.stockmarketsdk.controllers.WatchlistController;
 import com.example.stockmarketsdk.dto.GlobalQuoteResponse;
 import com.example.stockmarketsdk.dto.IntradayDataPoint;
+import com.example.stockmarketsdk.dto.WatchlistDTO;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class StockSDK {
         stockController.getTimeSeries(symbol, interval, callback);
     }
 
-    public static void getWatchlist(Callback_Stock<List<String>> callback) {
+    public static void getWatchlist(Callback_Stock<List<WatchlistDTO>> callback) {
         watchlistController.getWatchlist(callback);
     }
 

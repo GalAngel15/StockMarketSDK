@@ -1,5 +1,7 @@
 package com.example.stockmarketsdk.apis;
 
+import com.example.stockmarketsdk.dto.WatchlistDTO;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -11,7 +13,7 @@ import retrofit2.http.Path;
 
 public interface WatchlistAPI {
     @GET("/watchlist")
-    Call<List<String>> getWatchlist();
+    Call<List<WatchlistDTO>> getWatchlist();
 
     @POST("/watchlist/{stockSymbol}")
     Call<String> addStockToWatchlist(@Path("stockSymbol") String stockSymbol);

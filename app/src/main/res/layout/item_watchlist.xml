@@ -31,4 +31,13 @@
             android:textSize="14sp"
             android:textColor="@color/gray" />
     </LinearLayout>
+    <ImageButton
+        android:id="@+id/deleteStockBtn"
+        android:layout_width="15sp"
+        android:layout_height="20sp"
+        android:layout_gravity="end"
+        android:background="@color/white"
+        android:src="@drawable/ic_delete"
+        android:layout_margin="20dp"
+        app:tint="@color/yellow" />
 </androidx.cardview.widget.CardView>
