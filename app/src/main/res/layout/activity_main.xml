@@ -7,27 +7,110 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- AppBarLayout for Toolbar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Stock Market Demo"
-            android:background="?attr/colorPrimary" />
-    </com.google.android.material.appbar.AppBarLayout>
-
     <!-- Main Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="8dp"
+        android:padding="5dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Time Frame Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="4dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_1min"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="1m"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_5min"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="5m"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_15min"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="15m"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_30min"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="30m"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_60min"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="60m"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_day"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="D"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_week"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="W"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_month"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="M"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp"
+                app:rippleColor="@color/yellow"/>
+        </LinearLayout>
 
         <!-- Chart Section -->
         <RelativeLayout

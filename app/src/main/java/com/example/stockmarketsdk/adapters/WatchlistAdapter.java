@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stockmarketsdk.R;
+import com.example.stockmarketsdk.interfaces.OnItemClickListener;
 import com.example.stockmarketsdk.interfaces.OnStockDeleteListener;
 import com.example.stockmarketsdk.models.WatchlistItem;
 
@@ -19,16 +20,27 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
 
     private final List<WatchlistItem> watchlist;
     private OnStockDeleteListener onStockDeleteListener;
+    private OnItemClickListener onItemClickListener;
+    private int lastSelectedPosition = 0;
 
     public WatchlistAdapter(List<WatchlistItem> watchlist) {
         this.watchlist = watchlist;
     }
 
-    public void setOnStockDeleteListener(OnStockDeleteListener listener){
+    public void setOnStockDeleteListener(OnStockDeleteListener listener) {
         this.onStockDeleteListener = listener;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
 
+    public WatchlistItem getSelectedItem() {
+        if (lastSelectedPosition == -1) {
+            return null;
+        }
+        return watchlist.get(lastSelectedPosition);
+    }
     @NonNull
     @Override
     public WatchlistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +55,12 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
         holder.stockSymbol.setText(stock.getStockSymbol());
         holder.stockPrice.setText(stock.getStockPrice() + " $");
         holder.removeButton.setOnClickListener(v ->
-            onStockDeleteListener.onStockDeleted(stock,position)
+                onStockDeleteListener.onStockDeleted(stock, position)
+        );
+        holder.itemView.setOnClickListener(v -> {
+                    lastSelectedPosition = position;
+                    onItemClickListener.onItemClick(stock);
+                }
         );
     }
 

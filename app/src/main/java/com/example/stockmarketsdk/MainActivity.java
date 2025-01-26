@@ -3,6 +3,7 @@ package com.example.stockmarketsdk;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +37,22 @@ public class MainActivity extends AppCompatActivity {
     private LineChart lineChart;
     private WatchlistManager watchlistManager;
     private ChartManager chartManager;
-    private MaterialButton addStockButton;
+    private MaterialButton addStockButton, lastSelectedButton;
+    private TextView cornerText;
+    View.OnClickListener buttonClickListener = v -> {
+        // אם יש כפתור שנבחר קודם, החזר את הצבע שלו ללבן
+        if (lastSelectedButton != null) {
+            lastSelectedButton.setTextColor(Color.WHITE);
+        }
 
+        // שנה את צבע הטקסט של הכפתור שנלחץ לצהוב
+        MaterialButton clickedButton = (MaterialButton) v;
+        clickedButton.setTextColor(Color.YELLOW);
+
+        // שמור את הכפתור האחרון שנבחר
+        lastSelectedButton = clickedButton;
+        onStockClick(watchlistManager.getAdapter().getSelectedItem());
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,27 +62,15 @@ public class MainActivity extends AppCompatActivity {
         findViews();
         initButtons();
         watchlistManager = new WatchlistManager(this, watchlistRecyclerView);
-        chartManager = new ChartManager(lineChart);
+        chartManager = new ChartManager(lineChart, cornerText);
         //setChart();
         initWatchlist();
-        StockSDK.getTimeSeries("TIME_SERIES_DAILY","AAPL", new Callback_Stock<List<IntradayDataPoint>>() {
-            @Override
-            public void onSuccess(List<IntradayDataPoint> result) {
-                Log.e("MainActivity", "Fetched data: " + result);
-                setChart(result, lineChart);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("MainActivity", "Failed to fetch data: " + errorMessage);
-                Toast.makeText(MainActivity.this, "Failed to fetch data: " + errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void initWatchlist() {
         setWatchlist();
         watchlistManager.getAdapter().setOnStockDeleteListener(this::onStockDelete);
+        watchlistManager.getAdapter().setOnItemClickListener(this::onStockClick);
     }
 
 
@@ -75,18 +78,19 @@ public class MainActivity extends AppCompatActivity {
         lineChart = findViewById(R.id.chart);
         watchlistRecyclerView = findViewById(R.id.watchlist_recycler);
         addStockButton = findViewById(R.id.add_stock);
+        cornerText = findViewById(R.id.corner_text);
+        findViewById(R.id.button_1min).setOnClickListener(buttonClickListener);
+        findViewById(R.id.button_5min).setOnClickListener(buttonClickListener);
+        findViewById(R.id.button_30min).setOnClickListener(buttonClickListener);
+        findViewById(R.id.button_60min).setOnClickListener(buttonClickListener);
+        findViewById(R.id.button_day).setOnClickListener(buttonClickListener);
+        findViewById(R.id.button_week).setOnClickListener(buttonClickListener);
+        findViewById(R.id.button_month).setOnClickListener(buttonClickListener);
     }
 
     private void initButtons() {
         addStockButton.setOnClickListener(v -> showAddStockDialog());
-    }
-
-    private void setChart() {
-        List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            entries.add(new Entry(i + 5, (100 - i * 5) * 2));
-        }
-        chartManager.updateChartData(entries);
+        lastSelectedButton = findViewById(R.id.button_day);
     }
 
 
@@ -130,6 +134,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void onStockClick(WatchlistItem watchListItem) {
+        StockSDK.getTimeSeries(getTimeSeries(lastSelectedButton.getId()), watchListItem.getStockSymbol(), new Callback_Stock<List<IntradayDataPoint>>() {
+            @Override
+            public void onSuccess(List<IntradayDataPoint> result) {
+                Log.e("MainActivity", "Fetched data: " + result);
+                chartManager.updateChartData(result);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.e("MainActivity", "Failed to fetch data: " + errorMessage);
+                Toast.makeText(MainActivity.this, "Failed to fetch data: " + errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void handleAddStock(String stockSymbol) {
         if (!stockSymbol.isEmpty()) {
@@ -166,60 +185,27 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void setChart(List<IntradayDataPoint> dataPoints, LineChart lineChart) {
-        TextView cornerText = findViewById(R.id.corner_text);
-        // יצירת ערכי ציר Y (close) ו-X (timestamps כאינדקסים)
-        List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < dataPoints.size(); i++) {
-            entries.add(new Entry(i, (float) dataPoints.get(i).getClose()));
+    private StockSDK.TimeSeries getTimeSeries(int buttonId) {
+        if (buttonId == R.id.button_1min) {
+            return StockSDK.TimeSeries.INTRADAY_1MIN;
+        } else if (buttonId == R.id.button_5min) {
+            return StockSDK.TimeSeries.INTRADAY_5MIN;
+        } else if (buttonId == R.id.button_15min) {
+            return StockSDK.TimeSeries.INTRADAY_15MIN;
+        } else if (buttonId == R.id.button_30min) {
+            return StockSDK.TimeSeries.INTRADAY_30MIN;
+        } else if (buttonId == R.id.button_60min) {
+            return StockSDK.TimeSeries.INTRADAY_60MIN;
+        } else if (buttonId == R.id.button_day) {
+            return StockSDK.TimeSeries.DAILY;
+        } else if (buttonId == R.id.button_week) {
+            return StockSDK.TimeSeries.WEEKLY;
+        } else if (buttonId == R.id.button_month) {
+            return StockSDK.TimeSeries.MONTHLY;
+        } else {
+            return StockSDK.TimeSeries.DAILY; // ערך ברירת מחדל
         }
-
-        // יצירת ה-DataSet
-        LineDataSet dataSet = new LineDataSet(entries, "Closing Prices");
-        dataSet.setColor(Color.BLUE);
-        dataSet.setValueTextColor(Color.BLACK);
-
-        // הגדרת Formatter לתאריכים בציר X
-        String[] timestamps = dataPoints.stream()
-                .map(IntradayDataPoint::getTimestamp)
-                .toArray(String[]::new);
-
-        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                int index = (int) value;
-                return (index >= 0 && index < timestamps.length) ? timestamps[index] : "";
-            }
-        });
-
-        // קביעת נתונים לגרף
-        LineData lineData = new LineData(dataSet);
-        lineChart.setData(lineData);
-        lineChart.getXAxis().setGranularity(1f); // הצגת כל תאריך
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        CustomMarkerView markerView = new CustomMarkerView(this, R.layout.custom_marker_view);
-        markerView.setChartView(lineChart); // קישור ה-MarkerView לגרף
-        lineChart.setMarker(markerView);   // הגדרת ה-MarkerView לגרף
-
-
-        // הגדרת Listener לנקודות המסומנות
-        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                // עדכון הערכים בתצוגה בפינה
-                cornerText.setText(String.format("X: %.0f, Y: %.2f", e.getX(), e.getY()));
-            }
-
-            @Override
-            public void onNothingSelected() {
-                // ריקון התצוגה בפינה כשאין נקודה נבחרת
-                cornerText.setText("X: -, Y: -");
-            }
-        });
-
-
-        lineChart.invalidate(); // רענון
     }
+
 
 }
