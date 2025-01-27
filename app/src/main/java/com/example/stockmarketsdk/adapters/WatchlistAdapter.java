@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stockmarketsdk.R;
-import com.example.stockmarketsdk.interfaces.OnItemClickListener;
-import com.example.stockmarketsdk.interfaces.OnStockDeleteListener;
+import com.example.stockmarketsdk.interfaces.OnStockActionListener;
 import com.example.stockmarketsdk.models.WatchlistItem;
 
 import java.util.List;
@@ -19,19 +18,18 @@ import java.util.List;
 public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.WatchlistViewHolder> {
 
     private final List<WatchlistItem> watchlist;
-    private OnStockDeleteListener onStockDeleteListener;
-    private OnItemClickListener onItemClickListener;
+    private OnStockActionListener onStockDeleteListener, onItemClickListener;
     private int lastSelectedPosition = 0;
 
     public WatchlistAdapter(List<WatchlistItem> watchlist) {
         this.watchlist = watchlist;
     }
 
-    public void setOnStockDeleteListener(OnStockDeleteListener listener) {
+    public void setOnStockDeleteListener(OnStockActionListener listener) {
         this.onStockDeleteListener = listener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnStockActionListener listener) {
         this.onItemClickListener = listener;
     }
 
@@ -55,11 +53,11 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Watc
         holder.stockSymbol.setText(stock.getStockSymbol());
         holder.stockPrice.setText(stock.getStockPrice() + " $");
         holder.removeButton.setOnClickListener(v ->
-                onStockDeleteListener.onStockDeleted(stock, position)
+                onStockDeleteListener.onStockActionListener(stock, position)
         );
         holder.itemView.setOnClickListener(v -> {
                     lastSelectedPosition = position;
-                    onItemClickListener.onItemClick(stock);
+                    onItemClickListener.onStockActionListener(stock, position);
                 }
         );
     }

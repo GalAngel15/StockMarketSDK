@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         // שמור את הכפתור האחרון שנבחר
         lastSelectedButton = clickedButton;
-        onStockClick(watchlistManager.getAdapter().getSelectedItem());
+        onStockClick(watchlistManager.getAdapter().getSelectedItem(),-1);
     };
 
     @Override
@@ -134,11 +134,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void onStockClick(WatchlistItem watchListItem) {
+    private void onStockClick(WatchlistItem watchListItem, int position) {
         StockSDK.getTimeSeries(getTimeSeries(lastSelectedButton.getId()), watchListItem.getStockSymbol(), new Callback_Stock<List<IntradayDataPoint>>() {
             @Override
             public void onSuccess(List<IntradayDataPoint> result) {
                 Log.e("MainActivity", "Fetched data: " + result);
+                watchListItem.setStockPrice(result.get(result.size() - 1).getClose());
+                if (position != -1) {
+                    watchlistManager.getAdapter().notifyItemChanged(position);
+                }
                 chartManager.updateChartData(result);
             }
 
