@@ -4,12 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.stockmarketsdk"
+    namespace = "dev.galAngel.stockmarketsdk"
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 24
-
+        minSdk = 26
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
