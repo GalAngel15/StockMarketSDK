@@ -64,19 +64,20 @@ Under the hood, the SDK uses Retrofit to perform HTTP requests and Gson to parse
 
    In your **`settings.gradle`**:
    
-   ```kotlin
-dependencyResolutionManagement {
-    repositories {
-        maven { url 'https://jitpack.io' }
-        // ...other repositories
+```kotlin
+    dependencyResolutionManagement {
+        ...
+        repositories {
+            ...
+            maven { url 'https://jitpack.io' }
+        }
     }
-}
-   ```
+```
 
 2. **Add the Dependency**
 
    In your **`module-level build.gradle`**:
-   ```kotlin
+```kotlin
 dependencies {
     implementation("com.github.GalAngel15:StockMarketSDK:1.1.0")
 }
@@ -241,12 +242,6 @@ Contributions are welcome! If you'd like to add features or fix bugs:
 2. Create a new branch for your feature.
 3. Commit and push changes.
 4. Submit a Pull Request describing your changes.
-
----
-
-## **License**
-
-Distributed under the [MIT License](https://opensource.org/licenses/MIT). See `LICENSE` for more information.
 
 ---
 
