@@ -12,7 +12,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,14 +93,14 @@ public class ChartManager {
                 int index = (int) e.getX();
                 if (index >= 0 && index < timestamps.length) {
                     String date = timestamps[index];
-                    cornerText.setText(String.format("Date: %s, Y: %.2f", date, e.getY()));
+                    cornerText.setText(String.format("Date: %s, Price: %.2f", date, e.getY()));
                 }
             }
 
             @Override
             public void onNothingSelected() {
                 // Reset the corner text
-                cornerText.setText("Date: -, Y: -");
+                cornerText.setText("Date: -, Price: -");
 
             }
         });

@@ -2,6 +2,7 @@ package com.example.stockmarketsdk.controllers;
 
 import com.example.stockmarketsdk.Callback_Stock;
 import com.example.stockmarketsdk.apis.WatchlistAPI;
+import com.example.stockmarketsdk.dto.StockDTO;
 import com.example.stockmarketsdk.dto.WatchlistDTO;
 import com.google.gson.GsonBuilder;
 
@@ -31,14 +32,15 @@ public class WatchlistController {
         return retrofit.create(WatchlistAPI.class);
     }
 
-    public void getWatchlist(Callback_Stock<List<WatchlistDTO>> callback) {
-        getAPI().getWatchlist().enqueue(new Callback<>() {
+
+    public void getAllWatchlists(Callback_Stock<List<WatchlistDTO>> callback) {
+        getAPI().getAllWatchlists().enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<WatchlistDTO>> call, Response<List<WatchlistDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
-                    callback.onFailure("Failed to fetch watchlist");
+                    callback.onFailure("Failed to fetch watchlists");
                 }
             }
 
@@ -49,8 +51,44 @@ public class WatchlistController {
         });
     }
 
-    public void addStockToWatchlist(String stockSymbol ,Callback_Stock<WatchlistDTO> callback) {
-        getAPI().addStockToWatchlist(stockSymbol.toUpperCase()).enqueue(new Callback<>() {
+    public void createWatchlist(String name, Callback_Stock<WatchlistDTO> callback) {
+        getAPI().createWatchlist(name).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<WatchlistDTO> call, Response<WatchlistDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to create watchlist");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WatchlistDTO> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void getAllStocks(Callback_Stock<List<StockDTO>> callback) {
+        getAPI().getAllStocks().enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<StockDTO>> call, Response<List<StockDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch stocks");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StockDTO>> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void getWatchlistByName(String name, Callback_Stock<WatchlistDTO> callback) {
+        getAPI().getWatchlistByName(name).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<WatchlistDTO> call, Response<WatchlistDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -67,32 +105,14 @@ public class WatchlistController {
         });
     }
 
-    public void removeStockFromWatchlist(String stockSymbol ,Callback_Stock<Void> callback) {
-        getAPI().removeStockFromWatchlist(stockSymbol).enqueue(new Callback<>() {
+    public void deleteWatchlist(String name, Callback_Stock<Void> callback) {
+        getAPI().deleteWatchlist(name).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     callback.onSuccess(null);
                 } else {
-                    callback.onFailure("Failed to delete stock: HTTP " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                callback.onFailure("Error: " + t.getMessage());
-            }
-        });
-    }
-
-    public void clearWatchlist(Callback_Stock<Void> callback) {
-        getAPI().clearWatchlist().enqueue(new Callback<>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    callback.onSuccess(null);
-                } else {
-                    callback.onFailure("Failed to clear watchlist");
+                    callback.onFailure("Failed to delete watchlist");
                 }
             }
 
@@ -102,5 +122,40 @@ public class WatchlistController {
             }
         });
     }
-}
 
+    public void addStockToWatchlist(String name, String stockSymbol, Callback_Stock<WatchlistDTO> callback) {
+        getAPI().addStockToWatchlist(name, stockSymbol).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<WatchlistDTO> call, Response<WatchlistDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to add stock to watchlist");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WatchlistDTO> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public void removeStockFromWatchlist(String name, String stockSymbol, Callback_Stock<WatchlistDTO> callback) {
+        getAPI().removeStockFromWatchlist(name, stockSymbol).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<WatchlistDTO> call, Response<WatchlistDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to remove stock from watchlist");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WatchlistDTO> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+    }
+}

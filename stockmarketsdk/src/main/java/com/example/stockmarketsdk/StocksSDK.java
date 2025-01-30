@@ -4,11 +4,12 @@ import com.example.stockmarketsdk.controllers.StockController;
 import com.example.stockmarketsdk.controllers.WatchlistController;
 import com.example.stockmarketsdk.dto.GlobalQuoteResponse;
 import com.example.stockmarketsdk.dto.IntradayDataPoint;
+import com.example.stockmarketsdk.dto.StockDTO;
 import com.example.stockmarketsdk.dto.WatchlistDTO;
 
 import java.util.List;
 
-public class StockSDK {
+public class StocksSDK {
     public enum TimeSeries {INTRADAY_1MIN, INTRADAY_5MIN, INTRADAY_15MIN, INTRADAY_30MIN, INTRADAY_60MIN, DAILY, WEEKLY, MONTHLY
     }
     private static final StockController stockController = new StockController();
@@ -55,19 +56,30 @@ public class StockSDK {
         }
     }
 
-    public static void getWatchlist(Callback_Stock<List<WatchlistDTO>> callback) {
-        watchlistController.getWatchlist(callback);
+    public static void getAllWatchlists(Callback_Stock<List<WatchlistDTO>> callback) {
+        watchlistController.getAllWatchlists(callback);
+    }
+    public static void createWatchlist(String name, Callback_Stock<WatchlistDTO> callback) {
+        watchlistController.createWatchlist(name, callback);
     }
 
-    public static void addStockToWatchlist(String stockSymbol, Callback_Stock<WatchlistDTO> callback) {
-        watchlistController.addStockToWatchlist(stockSymbol, callback);
+    public static void getAllStocks(Callback_Stock<List<StockDTO>> callback) {
+        watchlistController.getAllStocks(callback);
     }
 
-    public static void removeStockFromWatchlist(String symbol, Callback_Stock<Void> callback) {
-        watchlistController.removeStockFromWatchlist(symbol, callback);
+    public static void getWatchlistByName(String name, Callback_Stock<WatchlistDTO> callback) {
+        watchlistController.getWatchlistByName(name, callback);
     }
 
-    public static void clearWatchlist(Callback_Stock<Void> callback) {
-        watchlistController.clearWatchlist(callback);
+    public static void deleteWatchlist(String name, Callback_Stock<Void> callback) {
+        watchlistController.deleteWatchlist(name, callback);
+    }
+
+    public static void addStockToWatchlist(String name, String stockSymbol, Callback_Stock<WatchlistDTO> callback) {
+        watchlistController.addStockToWatchlist(name, stockSymbol, callback);
+    }
+
+    public static void removeStockFromWatchlist(String name, String stockSymbol, Callback_Stock<WatchlistDTO> callback) {
+        watchlistController.removeStockFromWatchlist(name, stockSymbol, callback);
     }
 }

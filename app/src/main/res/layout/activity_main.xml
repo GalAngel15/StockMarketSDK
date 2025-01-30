@@ -147,14 +147,38 @@
             android:background="@color/white"
             android:padding="4dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Watchlist"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/black"
-                android:padding="3dp" />
+                android:orientation="horizontal">
+            <!-- Spinner לבחירת רשימת המעקב -->
+            <Spinner
+                android:id="@+id/watchlist_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@android:drawable/btn_dropdown" />
+
+                <ImageButton
+                    android:id="@+id/add_watchlist"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Add stock"
+                    android:src="@android:drawable/ic_input_add"
+                    app:tint="@color/black" />
+                <ImageButton
+                    android:id="@+id/delete_watchlist"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Add stock"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/black" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/watchlist_recycler"
@@ -174,7 +198,7 @@
                     android:id="@+id/add_stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="+ Add"
+                    android:text="+ Add Stock"
                     style="@style/Widget.MaterialComponents.Button.TextButton" />
 
                 <com.google.android.material.button.MaterialButton
@@ -189,13 +213,13 @@
     </LinearLayout>
 
     <!-- Search Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/search_stock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_search"
-        android:contentDescription="Search Stock"
-        app:backgroundTint="@color/colorAccent" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/search_stock"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:src="@drawable/ic_search"-->
+<!--        android:contentDescription="Search Stock"-->
+<!--        app:backgroundTint="@color/colorAccent" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
