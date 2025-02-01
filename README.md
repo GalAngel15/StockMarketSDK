@@ -245,6 +245,10 @@ Contributions are welcome! If you'd like to add features or fix bugs:
 
 ---
 
+## **License**
+Distributed under the [MIT License](https://opensource.org/licenses/MIT). See `LICENSE` for more information.
+---
+
 ### **Questions or Feedback?**
 Feel free to open an issue on GitHub if you have any questions, suggestions, or run into problems.
 
