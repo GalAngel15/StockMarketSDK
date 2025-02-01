@@ -6,10 +6,11 @@ Welcome to the official documentation for the **Stock Market SDK**.
 The Stock Market SDK provides tools for retrieving stock market data, managing watchlists, and visualizing financial data in Android applications.
 
 ## 📖 Table of Contents
-1. [API Documentation](../../../../Users/USER/Downloads/docs/api.md)
-2. [Android SDK](../../../../Users/USER/Downloads/docs/sdk.md)
-3. [Example App](../../../../Users/USER/Downloads/docs/example_app.md)
-4. [Setup & Installation](../../../../Users/USER/Downloads/docs/setup.md)
-5. [Architecture & Design](../../../../Users/USER/Downloads/docs/architecture.md)
+- [API Documentation](https://galangel15.github.io/StockMarketSDK/api.md)
+- [Android SDK](https://galangel15.github.io/StockMarketSDK/sdk.md)
+- [Example App](https://galangel15.github.io/StockMarketSDK/example_app.md)
+- [Setup & Installation](https://galangel15.github.io/StockMarketSDK/setup.md)
+- [Architecture & Design](https://galangel15.github.io/StockMarketSDK/architecture.md)
+
 
 Click on a section to view the details.
