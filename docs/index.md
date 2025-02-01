@@ -15,13 +15,13 @@ This document covers all aspects of the SDK, API, example app, and setup instruc
 
 ---
 
-## 🏁 Introduction
+## 🏁Introduction
 The Stock Market SDK is designed to help developers easily retrieve stock market data, manage watchlists, and visualize financial trends within their applications.  
 Built using **Retrofit**, **Gson**, and **MPAndroidChart**, the SDK offers a seamless integration experience.
 
 ---
 
-## 📡 API Documentation
+## 📡API Documentation
 
 ### 🌐 Base URL
 ```
@@ -287,7 +287,7 @@ https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
 
 ---
 
-## 📦 Stock Market SDK
+## 📦Stock Market SDK
 
 ### 📥 Installation
 
@@ -346,7 +346,7 @@ StockSDK.getTimeSeries(StockSDK.TimeSeries.DAILY, "GOOGL", new Callback_Stock<Li
 
 ---
 
-## 📱 Example Android Application
+## 📱Example Android Application
 
 ### 🌟 Features
 - Displays stock data using **MPAndroidChart**.
@@ -356,13 +356,13 @@ StockSDK.getTimeSeries(StockSDK.TimeSeries.DAILY, "GOOGL", new Callback_Stock<Li
 ### 🔧 Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/GalAngel15/StockMarketSDK-Example.git
+   git clone [https://github.com/GalAngel15/StockMarketSDK-Example.git](https://github.com/GalAngel15/StockMarketSDK.git)
    ```
 2. Open in Android Studio and build the project.
 
 ---
 
-## 🛠️ Setup & Deployment
+## Setup & Deployment
 
 ### 📡 API Deployment
 - **Cloud Provider**: Koyeb
@@ -377,7 +377,7 @@ StockSDK.getTimeSeries(StockSDK.TimeSeries.DAILY, "GOOGL", new Callback_Stock<Li
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ### 🔹 High-Level Overview
 ```mermaid
