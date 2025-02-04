@@ -201,6 +201,9 @@ public class MainActivity extends AppCompatActivity {
         StocksSDK.getAllWatchlists(new Callback_Stock<List<WatchlistDTO>>() {
             @Override
             public void onSuccess(List<WatchlistDTO> result) {
+                if(result.isEmpty()){
+                    return;
+                }
 
                 // יצירת רשימת שמות לתפריט הנפתח
                 List<String> watchlistNames = new ArrayList<>();
