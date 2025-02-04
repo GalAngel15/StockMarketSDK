@@ -5,13 +5,22 @@ This document covers all aspects of the SDK, API, example app, and setup instruc
 
 ---
 
-## 📌 Table of Contents
+## Table of Contents
 1. [Introduction](#introduction)
 2. [API Documentation](#api-documentation)
+   - [Stock Market API Endpoints](#stock-market-api-endpoints)
+   - [Watchlist API Endpoints](#watchlist-api-endpoints)
 3. [Stock Market SDK](#stock-market-sdk)
+   - [Installation](#installation)
+   - [Usage Examples](#example-usage)
 4. [Example Android Application](#example-android-application)
+   - [Features](#features)
+   - [Setup Instructions (Example App)](#setup)
+   - [Screenshots](#screenshots)
 5. [Setup & Deployment](#setup--deployment)
 6. [Architecture Overview](#architecture-overview)
+7. [License](#license)
+
 
 ---
 
@@ -28,10 +37,6 @@ Built using **Retrofit**, **Gson**, and **MPAndroidChart**, the SDK offers a sea
 https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
 ```
 
-### **📡 API Documentation - Full API Reference**
-
----
-
 ## 🌐 **Base URL**
 ```
 https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
@@ -39,7 +44,7 @@ https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
 
 ---
 
-## 📌 **Stock Market API Endpoints**
+## 📌**Stock Market API Endpoints**
 
 ### **1️⃣ Get Real-Time Stock Quote**
 - **Endpoint:** `GET /stock`
@@ -127,7 +132,7 @@ https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
 
 ---
 
-## 📌 **Watchlist API Endpoints**
+## 📌**Watchlist API Endpoints**
 
 ### **5️⃣ Create a New Watchlist**
 - **Endpoint:** `POST /watchlists`
@@ -289,7 +294,7 @@ https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
 
 ## 📦Stock Market SDK
 
-### 📥 Installation
+### 📥Installation
 
 1. Add JitPack to `settings.gradle`:
    ```kotlin
@@ -307,12 +312,12 @@ https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/
    }
    ```
 
-### 🚀 Features
+### 🚀Features
 - Fetch **real-time** stock quotes: `StockSDK.getStockQuote()`
 - Retrieve **historical** data: `StockSDK.getTimeSeries()`
 - **Manage watchlists**: Add and remove stocks.
 
-### 🔍 Example Usage
+### 🔍Example Usage
 
 #### Fetch a Stock Quote
 ```java
@@ -348,12 +353,12 @@ StockSDK.getTimeSeries(StockSDK.TimeSeries.DAILY, "GOOGL", new Callback_Stock<Li
 
 ## 📱Example Android Application
 
-### 🌟 Features
+### 🌟Features
 - Displays stock data using **MPAndroidChart**.
 - Supports **watchlist management** via RecyclerView.
 - Uses **Material UI** for a modern look.
 
-### 🔧 Setup
+### 🔧Setup
 1. Clone the repository:
    ```bash
    git clone [https://github.com/GalAngel15/StockMarketSDK-Example.git](https://github.com/GalAngel15/StockMarketSDK.git)
@@ -362,30 +367,37 @@ StockSDK.getTimeSeries(StockSDK.TimeSeries.DAILY, "GOOGL", new Callback_Stock<Li
 
 ---
 
+### Screenshots
+
 ## Setup & Deployment
 
-### 📡 API Deployment
+### 📡API Deployment
 - **Cloud Provider**: Koyeb
 - **Database**: MongoDB Atlas
 - **Base URL**: `https://pale-caitlin-dev-gal-angel-50977206.koyeb.app/`
 
-### 📤 SDK Publishing
+### 📤SDK Publishing
 - **Repository**: [JitPack](https://jitpack.io/#GalAngel15/StockMarketSDK)
 
-### 📄 Documentation Hosting
+### 📄Documentation Hosting
 - **Hosted on GitHub Pages**
 
 ---
 
 ## Architecture Overview
 
-### 🔹 High-Level Overview
+### 🔹High-Level Overview
 ```mermaid
+
 graph TD;
-    User -->|Requests| API[Stock Market API]
-    API -->|Fetches Data| Database[MongoDB Atlas]
-    API -->|Returns Data| SDK[Stock Market SDK]
-    SDK -->|Displays Data| AndroidApp[Example App]
+    User -->|Requests| AndroidApp[Example App]
+    AndroidApp -->|Communicates with| SDK[Stock Market SDK]
+    SDK -->|Requests| API[Stock Market API]
+    API -->|Fetches/Updates Data| Database[MongoDB Atlas]
+    API -->|Returns Data| SDK
+    SDK -->|Displays Data| AndroidApp
+    API -->|Fetches Data from| ExternalAPI[Alpha Vantage API]
+
 ```
 
 ### 🏛 Components
@@ -396,7 +408,7 @@ graph TD;
 
 ---
 
-## 📜 License
+## 📜License
 
 Distributed under the **MIT License**.  
 See `LICENSE` for more information.
