@@ -368,6 +368,16 @@ StockSDK.getTimeSeries(StockSDK.TimeSeries.DAILY, "GOOGL", new Callback_Stock<Li
 ---
 
 ### Screenshots
+<div class="row">
+<img src="https://github.com/GalAngel15/StockMarketSDK/blob/master/docs/images/img1.jpg?raw=true" alt="img1" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/StockMarketSDK/blob/master/docs/images/img2.jpg?raw=true" alt="img2" style="height:700px;"/>
+</div>
+<div class="row">
+<img src="https://github.com/GalAngel15/StockMarketSDK/blob/master/docs/images/img3.jpg?raw=true" alt="img3" style="height:700px;"/>
+<img src="https://github.com/GalAngel15/StockMarketSDK/blob/master/docs/images/img4.jpg?raw=true" alt="img4" style="height:700px;"/>
+   </div>
+<img src="https://github.com/GalAngel15/StockMarketSDK/blob/master/docs/images/img5.jpg?raw=true" alt="img5" style="height:700px;"/>
+
 
 ## Setup & Deployment
 
