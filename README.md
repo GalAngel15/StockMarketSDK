@@ -4,6 +4,8 @@
 
 The **Stock Market SDK** is a powerful and easy-to-use Android library that simplifies the process of retrieving stock market data and managing watchlists. Built with **Retrofit** and **Gson**, it offers a straightforward, callback-based API for fetching real-time quotes, intraday/historical data, and handling custom watchlists.
 
+For more in-depth instructions on setting up and using the Stock Market SDK, visit the full documentation [here](https://galangel15.github.io/StockMarketSDK/).
+
 ---
 
 ## **Table of Contents**
